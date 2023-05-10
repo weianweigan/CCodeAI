@@ -1,8 +1,14 @@
 ﻿using System.IO;
+
+public interface IQuickChatSkill
+{
+    string Name { get; }
+}
+
 /// <summary>
-/// 本地语义函数
+/// Local Semantic Mdoel
 /// </summary>
-public class LocalSemanticFunctionModel
+public class LocalSemanticFunctionModel:IQuickChatSkill
 {
     public LocalSemanticFunctionModel(
         string pathName, 

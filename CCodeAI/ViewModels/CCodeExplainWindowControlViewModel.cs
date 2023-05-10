@@ -5,15 +5,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.AI.ChatCompletion;
-using Microsoft.SemanticKernel.KernelExtensions;
-using Microsoft.SemanticKernel.Orchestration;
-using Microsoft.SemanticKernel.SemanticFunctions;
-using Microsoft.VisualStudio.Text.Editor;
-using System.Collections.Generic;
+using Microsoft.SemanticKernel.SkillDefinition;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,7 +21,6 @@ namespace CCodeAI.ViewModels
         private AsyncRelayCommand _sendCommand;
         private string _question;
         private bool _isLoading = false;
-        private CancellationTokenSource _coreSkillcancellationTokenSource;
 
         public CCodeExplainWindowControlViewModel()
         {
@@ -58,7 +52,9 @@ namespace CCodeAI.ViewModels
 
         public SkillModel ChatSkill { get; }
 
-        public LocalSemanticFunctionModel SelectedChatSkill;
+        public CancellationTokenSource CoreSkillcancellationTokenSource { get; set; }
+
+        public LocalSemanticFunctionModel SelectedChatSkill { get; set; }
 
         public void AiLoading()
         {
@@ -138,8 +134,8 @@ namespace CCodeAI.ViewModels
                 context.Variables["extension"] = extension;
                 context.Variables["culture"] = System.Globalization.CultureInfo.CurrentCulture.EnglishName;
 
-                _coreSkillcancellationTokenSource = new CancellationTokenSource();
-                var result = await explainFunc.InvokeAsync(code, context, cancel: _coreSkillcancellationTokenSource.Token);
+                CoreSkillcancellationTokenSource = new CancellationTokenSource();
+                var result = await explainFunc.InvokeAsync(code, context, cancellationToken: CoreSkillcancellationTokenSource.Token);
 
                 if (result.ErrorOccurred)
                 {
@@ -164,8 +160,8 @@ namespace CCodeAI.ViewModels
             finally
             {
                 AiLoaded();                
-                _coreSkillcancellationTokenSource?.Dispose();
-                _coreSkillcancellationTokenSource = null;
+                CoreSkillcancellationTokenSource?.Dispose();
+                CoreSkillcancellationTokenSource = null;
             }
         }
 
@@ -182,8 +178,8 @@ namespace CCodeAI.ViewModels
                 context.Variables["extension"] = extension;
                 context.Variables["culture"] = System.Globalization.CultureInfo.CurrentCulture.EnglishName;
 
-                _coreSkillcancellationTokenSource = new CancellationTokenSource();
-                var result = await semanticFuncation.InvokeAsync(code, context, cancel: _coreSkillcancellationTokenSource.Token);
+                CoreSkillcancellationTokenSource = new CancellationTokenSource();
+                var result = await semanticFuncation.InvokeAsync(code, context, cancellationToken: CoreSkillcancellationTokenSource.Token);
 
                 if (result.ErrorOccurred)
                 {
@@ -208,8 +204,8 @@ namespace CCodeAI.ViewModels
             finally
             {
                 AiLoaded();
-                _coreSkillcancellationTokenSource?.Dispose();
-                _coreSkillcancellationTokenSource = null;
+                CoreSkillcancellationTokenSource?.Dispose();
+                CoreSkillcancellationTokenSource = null;
             }
         }
 
@@ -250,7 +246,7 @@ namespace CCodeAI.ViewModels
                 }
                 else
                 {
-                    _coreSkillcancellationTokenSource?.Cancel();
+                    CoreSkillcancellationTokenSource?.Cancel();
                 }
             }
             catch (Exception ex)

@@ -21,24 +21,25 @@ public class KernelFactory
             if (UseAzureOpenAI)
             {
                 c.AddAzureTextCompletionService(
-                    "ccode",
                     "text-davinci-003",
                     AzureConfig.Endpoint,
-                    AzureConfig.AppKey
+                    AzureConfig.AppKey,
+                    "ccode"
                     );
                 c.AddAzureChatCompletionService(
-                    "ccode",
                     "gpt-35-turbo",
                     AzureConfig.Endpoint,
                     AzureConfig.AppKey,
-                    false);
+                    alsoAsTextCompletion:false,
+                    serviceId:"ccodechat");
                 c.AddAzureTextEmbeddingGenerationService
                 (
-                    "ada", 
                     "text-embedding-ada-002",
                     AzureConfig.Endpoint,
-                    AzureConfig.AppKey
+                    AzureConfig.AppKey,
+                    "ada"
                 );
+                c.SetDefaultTextCompletionService("ccode");
             }
             else
             {
@@ -56,7 +57,7 @@ public class KernelFactory
     public static async Task<string> InvokeCodeFuncationAsync(
         string semanticFuncation,
         string code,
-        CancellationToken? cancellationToken = null,
+        CancellationToken cancellationToken,
         string extension = "csharp")
     {
         Init();
@@ -66,7 +67,7 @@ public class KernelFactory
         var context = SKernel.CreateNewContext();
         context.Variables["extension"] = extension;
 
-        var result = await explainFunc.InvokeAsync(code, context,cancel:cancellationToken);
+        var result = await explainFunc.InvokeAsync(code, context,cancellationToken:cancellationToken);
 
         if (result.ErrorOccurred)
         {
