@@ -3,6 +3,7 @@ using CCodeAI.Models;
 using CCodeAI.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using EnvDTE;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.AI.ChatCompletion;
 using Microsoft.SemanticKernel.SkillDefinition;
@@ -73,6 +74,16 @@ namespace CCodeAI.ViewModels
                 return;
             }
 
+            if (AzureConfig.AllowCalls() == false)
+            {
+                ChatDatas.Add(new ChatData()
+                {
+                    Content = AzureConfig.OverLimitMsg,
+                    Who = EWho.PlugIn
+                });
+                return;
+            }
+
             AiLoading();
             try
             {
@@ -122,13 +133,23 @@ namespace CCodeAI.ViewModels
         public async Task<string> CodeSkillAsync(
             string code,
             string extension,
-            string semanticFuncation)
+            string semanticFunction)
         {
+            if (AzureConfig.AllowCalls() == false)
+            {
+                ChatDatas.Add(new ChatData()
+                {
+                    Content = AzureConfig.OverLimitMsg,
+                    Who = EWho.PlugIn
+                });
+                return AzureConfig.OverLimitMsg;
+            }
+
             AiLoading();
 
             try
             {
-                var explainFunc = SKernel.CreateSemanticFunction(semanticFuncation);
+                var explainFunc = SKernel.CreateSemanticFunction(semanticFunction);
 
                 var context = SKernel.CreateNewContext();
                 context.Variables["extension"] = extension;
@@ -168,8 +189,18 @@ namespace CCodeAI.ViewModels
         public async Task<string> CodeSkillAsync(
             string code,
             string extension,
-            ISKFunction semanticFuncation)
+            ISKFunction semanticFunction)
         {
+            if (AzureConfig.AllowCalls() == false)
+            {
+                ChatDatas.Add(new ChatData()
+                {
+                    Content = AzureConfig.OverLimitMsg,
+                    Who = EWho.PlugIn
+                });
+                return AzureConfig.OverLimitMsg;
+            }
+
             AiLoading();
 
             try
@@ -234,6 +265,7 @@ namespace CCodeAI.ViewModels
             }
 
         }
+
 
         [RelayCommand]
         private void Cancel()

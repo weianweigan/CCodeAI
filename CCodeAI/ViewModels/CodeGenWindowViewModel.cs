@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CCodeAI.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Orchestration;
@@ -107,6 +108,12 @@ public partial class CodeGenWindowViewModel : ObservableObject
     {
         if (SelectedSemanticModel == null || string.IsNullOrWhiteSpace(Input))
         {
+            return;
+        }
+
+        if (AzureConfig.AllowCalls() == false)
+        {
+            Output = AzureConfig.OverLimitMsg;
             return;
         }
 

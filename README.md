@@ -28,7 +28,7 @@ Download：[Visual Studio Marketplace](https://marketplace.visualstudio.com/item
 
 [Tools] -> [CCodeAI] -> Chat with OpenAI
 
-<div><img src="./Resources/ChatPane.png" height="400"/></div>
+<div><img src="./Resources/Chatpane.png" height="400"/></div>
 
 ## Generate code
 
@@ -58,6 +58,7 @@ You can also access CCodeAI's features by right-clicking in the editor.
 - [ ] More codefixes.
 - [ ] Use codex model to generatecode.
 - [ ] Code Completion whick like github copilot.
+- [ ] Provide annotation translation
 
 # Update Log
 

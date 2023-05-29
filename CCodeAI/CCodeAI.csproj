@@ -57,6 +57,9 @@
     <Compile Include="GitSkills\PullRequestSkill.cs" />
     <Compile Include="Models\ChatData.cs" />
     <Compile Include="Models\ChatListExtension.cs" />
+    <Compile Include="Models\ConfigOptions.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Models\WelcomeChatData.cs" />
     <Compile Include="Models\EWho.cs" />
     <Compile Include="Utils\CommitChunker.cs" />

@@ -20,18 +20,17 @@ public class KernelFactory
         {
             if (UseAzureOpenAI)
             {
-                c.AddAzureTextCompletionService(
-                    "text-davinci-003",
-                    AzureConfig.Endpoint,
-                    AzureConfig.AppKey,
-                    "ccode"
-                    );
+                //c.AddAzureTextCompletionService(
+                //    "ccode",
+                //    "text-davinci-003",
+                //    AzureConfig.Endpoint,
+                //    AzureConfig.AppKey
+                //    );
                 c.AddAzureChatCompletionService(
                     "gpt-35-turbo",
                     AzureConfig.Endpoint,
                     AzureConfig.AppKey,
-                    alsoAsTextCompletion:false,
-                    serviceId:"ccodechat");
+                    true);
                 c.AddAzureTextEmbeddingGenerationService
                 (
                     "text-embedding-ada-002",
@@ -54,15 +53,15 @@ public class KernelFactory
         .Build();
     }
 
-    public static async Task<string> InvokeCodeFuncationAsync(
-        string semanticFuncation,
+    public static async Task<string> InvokeCodeFunctionAsync(
+        string semanticFunction,
         string code,
         CancellationToken cancellationToken,
         string extension = "csharp")
     {
         Init();
 
-        var explainFunc = SKernel.CreateSemanticFunction(semanticFuncation);
+        var explainFunc = SKernel.CreateSemanticFunction(semanticFunction);
 
         var context = SKernel.CreateNewContext();
         context.Variables["extension"] = extension;

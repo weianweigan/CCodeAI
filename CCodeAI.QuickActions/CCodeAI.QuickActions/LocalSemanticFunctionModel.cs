@@ -23,7 +23,7 @@ public class LocalSemanticFunctionModel:IQuickChatSkill
 
     #region Properties
     /// <summary>
-    /// Funcation Name
+    /// Function Name
     /// </summary>
     public string Name { get; }
 
@@ -33,7 +33,7 @@ public class LocalSemanticFunctionModel:IQuickChatSkill
     public string PathName { get; }
 
     /// <summary>
-    /// Funcation Description
+    /// Function Description
     /// </summary>
     public string Description { get; }
 
