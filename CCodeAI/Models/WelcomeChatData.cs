@@ -46,9 +46,9 @@ public class WelcomeChatData:ChatData
 
     public SkillModel CoreSkill { get; }
 
-    public AsyncRelayCommand<IQuickChatSkill> ExecuteCoreSkillCommand => _executeCoreSkillCommand ??= new AsyncRelayCommand<IQuickChatSkill>(ExcuteCodeSkillSKFunctionAsync);
+    public AsyncRelayCommand<IQuickChatSkill> ExecuteCoreSkillCommand => _executeCoreSkillCommand ??= new AsyncRelayCommand<IQuickChatSkill>(ExecuteCodeSkillSKFunctionAsync);
 
-    private async Task ExcuteCodeSkillSKFunctionAsync(
+    private async Task ExecuteCodeSkillSKFunctionAsync(
         IQuickChatSkill quickChatSkill,
         CancellationToken cancellationToken)
     {
@@ -161,10 +161,10 @@ public class WelcomeChatData:ChatData
         var gitReposDir = await GetWorkDirectoryAsync();
         if (string.IsNullOrEmpty(gitReposDir))
         {
-            await VS.MessageBox.ShowErrorAsync("Git Repostiory Not Found");
+            await VS.MessageBox.ShowErrorAsync("Git Repository Not Found");
             return;
         }
-
+        
         var process = new Process
         {
             StartInfo = new ProcessStartInfo

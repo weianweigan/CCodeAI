@@ -11,11 +11,6 @@ public class KernelFactory
 
     public static void Init()
     {
-        if (SKernel != null)
-        {
-            return;
-        }
-
         SKernel = Kernel.Builder.Configure(c =>
         {
             if (UseAzureOpenAI)
@@ -30,7 +25,8 @@ public class KernelFactory
                     "gpt-35-turbo",
                     AzureConfig.Endpoint,
                     AzureConfig.AppKey,
-                    true);
+                    alsoAsTextCompletion: true,
+                    serviceId:"ccode");
                 c.AddAzureTextEmbeddingGenerationService
                 (
                     "text-embedding-ada-002",
@@ -42,11 +38,11 @@ public class KernelFactory
             }
             else
             {
-                //c.AddOpenAITextCompletionService(
-                //    "ccode",
-                //    OpenAIConfig.Model,
-                //    OpenAIConfig.OpenAIKey
-                //    );
+                c.AddOpenAITextCompletionService(
+                    "ccode",
+                    OpenAIConfig.Model,
+                    OpenAIConfig.OpenAIKey
+                    );
             }
         })
         .WithMemoryStorage(new VolatileMemoryStore())

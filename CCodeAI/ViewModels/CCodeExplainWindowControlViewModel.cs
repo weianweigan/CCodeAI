@@ -210,7 +210,7 @@ namespace CCodeAI.ViewModels
                 context.Variables["culture"] = System.Globalization.CultureInfo.CurrentCulture.EnglishName;
 
                 CoreSkillcancellationTokenSource = new CancellationTokenSource();
-                var result = await semanticFuncation.InvokeAsync(code, context, cancellationToken: CoreSkillcancellationTokenSource.Token);
+                var result = await semanticFunction.InvokeAsync(code, context, cancellationToken: CoreSkillcancellationTokenSource.Token);
 
                 if (result.ErrorOccurred)
                 {

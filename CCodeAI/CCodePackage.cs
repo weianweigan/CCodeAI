@@ -32,8 +32,6 @@ namespace CCodeAI
             {
                 AzureConfig.DefaultConfiguration();
             }
-
-
         }
     }
 }
